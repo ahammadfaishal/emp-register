@@ -15,25 +15,25 @@ public class WelcomePanel extends JPanel {
 	public WelcomePanel() {
 		setBackground(new Color(0, 139, 139));
 		setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("Welcome to Employee Registration System");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setBounds(76, 82, 397, 30);
 		add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("Assaignment: 03");
+
+		JLabel lblNewLabel_1 = new JLabel("Assaignment: 04");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblNewLabel_1.setForeground(new Color(255, 255, 255));
 		lblNewLabel_1.setBounds(466, 283, 88, 14);
 		add(lblNewLabel_1);
-		
+
 		JLabel lblNewLabel_2 = new JLabel("IICT, BUET");
 		lblNewLabel_2.setForeground(new Color(255, 255, 255));
 		lblNewLabel_2.setBounds(10, 283, 60, 14);
 		add(lblNewLabel_2);
-		
+
 		JLabel lblNewLabel_3 = new JLabel("Faishal Ahammad");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_3.setForeground(new Color(255, 255, 255));

@@ -2,11 +2,18 @@ package com.faisal.empgui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -17,6 +24,7 @@ public class AddUpazillaPanel extends JPanel {
 	 * Create the panel.
 	 */
 	private JTextField txtThana;
+
 	public AddUpazillaPanel() {
 		setForeground(new Color(65, 105, 225));
 		setBackground(new Color(0, 139, 139));
@@ -27,20 +35,33 @@ public class AddUpazillaPanel extends JPanel {
 		lblDivisionComboBox.setLabelFor(lblDivisionComboBox);
 		lblDivisionComboBox.setBounds(163, 99, 81, 24);
 		add(lblDivisionComboBox);
-
+		
+		JComboBox distDdl = new JComboBox();
+		
 		JComboBox divisionComboBox = new JComboBox();
 		divisionComboBox.setModel(new DefaultComboBoxModel(Divisions.values()));
 		divisionComboBox.setBounds(266, 99, 101, 24);
 		add(divisionComboBox);
+		divisionComboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				Divisions selectedType = (Divisions) arg0.getItem();
+				DB_UTIL db = new DB_UTIL();
+				var districts = db.getDistrictsByDivisionId(selectedType.ordinal());
+				var model = new Vector<NameValueDto<Integer>>();
+				for (var element : districts) {
+					model.addElement(element);					
+				}			
+				distDdl.setModel(new DefaultComboBoxModel(model));
+			}
+		});
 
 		JLabel lblDistDdl = new JLabel("District");
 		lblDistDdl.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDistDdl.setBounds(163, 134, 81, 24);
 		add(lblDistDdl);
-
-		JComboBox distDdl = new JComboBox();
+		
 		lblDistDdl.setLabelFor(distDdl);
-		distDdl.setModel(new DefaultComboBoxModel(new String[] { "Comilla", "Chadpur", "B Baria", "Savar" }));
+
 		distDdl.setBounds(266, 135, 101, 24);
 		add(distDdl);
 
@@ -56,6 +77,19 @@ public class AddUpazillaPanel extends JPanel {
 		txtThana.setColumns(10);
 
 		JButton btnSaveThana = new JButton("Save");
+		btnSaveThana.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				NameValueDto<Integer> selectedDist = (NameValueDto<Integer>) distDdl.getSelectedItem();
+				DB_UTIL db = new DB_UTIL();
+				db.insertUpazilla(selectedDist.getValue(), txtThana.getText());				 
+				distDdl.setSelectedIndex(0);
+				divisionComboBox.setSelectedIndex(0);
+				txtThana.setText("");
+				
+				JOptionPane.showMessageDialog(null, "Upazilla saved successfully");
+			}
+		});
 		btnSaveThana.setForeground(new Color(255, 255, 255));
 		btnSaveThana.setBackground(new Color(46, 139, 87));
 		btnSaveThana.setFont(new Font("Tahoma", Font.BOLD, 14));

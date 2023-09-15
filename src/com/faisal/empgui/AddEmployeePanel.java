@@ -3,16 +3,27 @@ package com.faisal.empgui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Path;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -26,19 +37,19 @@ public class AddEmployeePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	
+
 	private JTextField txtFName;
 	private JTextField txtMName;
 	private JTextField txtLName;
 	private JTextField txtNID;
 	private JTextField txtPhone;
 	private JTextField txtEmail;
-	
-	public AddEmployeePanel() {
+	private String fileName;
 
+	public AddEmployeePanel() {
 		setBackground(new Color(0, 139, 139));
 		setLayout(null);
-		
+
 		JLabel lblFName = new JLabel("First name");
 		lblFName.setForeground(new Color(255, 255, 255));
 		lblFName.setBounds(34, 61, 81, 24);
@@ -131,30 +142,54 @@ public class AddEmployeePanel extends JPanel {
 		lblEmpDivision.setBounds(269, 160, 81, 24);
 		add(lblEmpDivision);
 
+		JComboBox cmbEmpDist = new JComboBox();
+		JComboBox cmbEmpThana = new JComboBox();
 		JComboBox cmbEmpDiv = new JComboBox();
 		lblEmpDivision.setLabelFor(cmbEmpDiv);
 		cmbEmpDiv.setModel(new DefaultComboBoxModel(Divisions.values()));
 		cmbEmpDiv.setBounds(351, 160, 101, 24);
 		add(cmbEmpDiv);
+		cmbEmpDiv.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				Divisions selectedType = (Divisions) arg0.getItem();
+				DB_UTIL db = new DB_UTIL();
+				var districts = db.getDistrictsByDivisionId(selectedType.ordinal());
+				var model = new Vector<NameValueDto<Integer>>();
+				for (var element : districts) {
+					model.addElement(element);
+				}
+				cmbEmpDist.setModel(new DefaultComboBoxModel(model));
+				cmbEmpThana.setModel(new DefaultComboBoxModel());
+			}
+		});
 
 		JLabel lblEmpDist = new JLabel("District");
 		lblEmpDist.setForeground(new Color(255, 255, 255));
 		lblEmpDist.setBounds(269, 185, 81, 24);
 		add(lblEmpDist);
 
-		JComboBox cmbEmpDist = new JComboBox();
-		cmbEmpDist.setModel(new DefaultComboBoxModel(new String[] {"Comilla", "Dhaka ", "Savar", "Narayangonj", "Natore", "Chapai", "Chadpur"}));
 		lblEmpDist.setLabelFor(cmbEmpDist);
 		cmbEmpDist.setBounds(351, 185, 101, 24);
 		add(cmbEmpDist);
+
+		cmbEmpDist.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				var selectedDist = (NameValueDto<Integer>) arg0.getItem();
+				DB_UTIL db = new DB_UTIL();
+				var upazillas = db.getUpazillaByDistrictId(selectedDist.getValue());
+				Vector model = new Vector();
+				for (var element : upazillas) {
+					model.addElement(element);
+				}
+				cmbEmpThana.setModel(new DefaultComboBoxModel(model));
+			}
+		});
 
 		JLabel lblEmpThana = new JLabel("Thana");
 		lblEmpThana.setForeground(new Color(255, 255, 255));
 		lblEmpThana.setBounds(269, 210, 81, 24);
 		add(lblEmpThana);
 
-		JComboBox cmbEmpThana = new JComboBox();
-		cmbEmpThana.setModel(new DefaultComboBoxModel(new String[] {"Comilla", "Laksam", "Comilla Sadar", "Chandina", "Daudkandi"}));
 		lblEmpThana.setLabelFor(cmbEmpThana);
 		cmbEmpThana.setBounds(351, 210, 101, 24);
 		add(cmbEmpThana);
@@ -175,13 +210,23 @@ public class AddEmployeePanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				FileNameExtensionFilter filer = new FileNameExtensionFilter("*.Images","jpg", "png");
+				FileNameExtensionFilter filer = new FileNameExtensionFilter("*.Images", "jpg", "png");
 				fileChooser.addChoosableFileFilter(filer);
 				int result = fileChooser.showSaveDialog(null);
-				if(result == JFileChooser.APPROVE_OPTION) {
+				if (result == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 					String path = file.getAbsolutePath();
-					lblImageContainer.setIcon(ResizeImage(path, lblImageContainer.getWidth(), lblImageContainer.getHeight()));
+					lblImageContainer
+							.setIcon(ResizeImage(path, lblImageContainer.getWidth(), lblImageContainer.getHeight()));
+					fileName = file.getName();
+					Path sourcePath = (Path) Paths.get(path);
+					Path targetPath = (Path) Paths.get(System.getProperty("user.home"), "/emp-images", fileName);
+					try {
+						Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -190,7 +235,63 @@ public class AddEmployeePanel extends JPanel {
 		lblImageContainer.setBorder(BorderFactory.createLineBorder(new Color(144, 238, 144)));
 		lblImageContainer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblImageContainer.setBounds(331, 20, 121, 103);
-		add(lblImageContainer);		
+		lblImageContainer.setToolTipText("Click to upload image");
+		add(lblImageContainer);
+
+		JButton btnSave = new JButton("Save");
+		btnSave.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				var selectedDist = (NameValueDto<Integer>) cmbEmpDist.getSelectedItem();
+				var selectedUpz = (NameValueDto<Integer>) cmbEmpThana.getSelectedItem();
+				var gender = (Gender) cmbGender.getSelectedItem();
+				DB_UTIL db = new DB_UTIL();
+				db.insertEmployee(txtFName.getText(), txtMName.getText(), txtLName.getText(), gender.ordinal(),
+						txtNID.getText(), dob.getDate(), txaAddress.getText(), txtPhone.getText(), txtEmail.getText(),
+						fileName, selectedDist.getValue(), selectedUpz.getValue());
+				cmbEmpDiv.setSelectedIndex(0);
+				txtFName.setText("");
+				txtMName.setText("");
+				txtLName.setText("");
+				txtNID.setText("");
+				txtPhone.setText("");
+				txtEmail.setText("");
+				txaAddress.setText("");
+				cmbGender.setSelectedIndex(0);
+				lblImageContainer.setIcon(null);
+				dob.setCalendar(null);
+				JOptionPane.showMessageDialog(null, "Employee added successfully");
+			}
+		});
+		btnSave.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnSave.setForeground(new Color(255, 255, 255));
+		btnSave.setBackground(new Color(46, 139, 87));
+		btnSave.setBounds(283, 265, 90, 33);
+		add(btnSave);
+
+		JButton btnClear = new JButton("Clear");
+		btnClear.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cmbEmpDiv.setSelectedIndex(0);
+				txtFName.setText("");
+				txtMName.setText("");
+				txtLName.setText("");
+				txtNID.setText("");
+				txtPhone.setText("");
+				txtEmail.setText("");
+				txaAddress.setText("");
+				fileName = "";
+				cmbGender.setSelectedIndex(0);
+				lblImageContainer.setIcon(null);
+				dob.setCalendar(null);
+			}
+		});
+		btnClear.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnClear.setForeground(new Color(255, 255, 255));
+		btnClear.setBackground(new Color(119, 136, 153));
+		btnClear.setBounds(180, 265, 90, 33);
+		add(btnClear);
 	}
 
 	public ImageIcon ResizeImage(String imagepath, int widhth, int height) {

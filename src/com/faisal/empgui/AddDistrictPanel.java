@@ -19,7 +19,7 @@ public class AddDistrictPanel extends JPanel {
 	 * Create the panel.
 	 */
 	private JTextField txtDist;
-	
+
 	public AddDistrictPanel() {
 
 		setBackground(new Color(0, 139, 139));
@@ -55,13 +55,8 @@ public class AddDistrictPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Divisions selectedType = (Divisions) distCombo.getSelectedItem();
-				//_districts.add(new District(selectedType.name(), txtDist.getText()));
-				//tblDistList.repaint();
-				//layeredPane.removeAll();
-				//layeredPane.add(panel_2);
-				//layeredPane.repaint();
-				//layeredPane.revalidate();
-
+				DB_UTIL db = new DB_UTIL();
+				db.insertDistrict(selectedType.ordinal(), txtDist.getText());
 				distCombo.setSelectedIndex(0);
 				txtDist.setText("");
 			}
@@ -72,19 +67,19 @@ public class AddDistrictPanel extends JPanel {
 		btnDistSave.setBounds(283, 205, 90, 33);
 		add(btnDistSave);
 
-		JButton btnNewButton = new JButton("Clear");
-		btnNewButton.addMouseListener(new MouseAdapter() {
+		JButton btnClear = new JButton("Clear");
+		btnClear.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				distCombo.setSelectedIndex(0);
 				txtDist.setText("");
 			}
 		});
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnNewButton.setForeground(new Color(255, 255, 255));
-		btnNewButton.setBackground(new Color(119, 136, 153));
-		btnNewButton.setBounds(180, 205, 90, 33);
-		add(btnNewButton);
+		btnClear.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnClear.setForeground(new Color(255, 255, 255));
+		btnClear.setBackground(new Color(119, 136, 153));
+		btnClear.setBounds(180, 205, 90, 33);
+		add(btnClear);
 	}
 
 }

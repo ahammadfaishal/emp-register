@@ -1,21 +1,12 @@
 package com.faisal.empgui;
 
-public class District {
-	@Override
-	public String toString() {
-		return getDistrict();
-	}
-
-	public District(String division, String district) {
-		this.Division = division;
-		this.District = district;
-	}
-
-	public District(int id, int division_Id, String district) {
-		this.Id = id;
+public class Upazilla {
+	public Upazilla(int division_Id, String district, String upazillaName) {
+		super();
 		Divisions enumValue = Divisions.values()[division_Id];
 		this.Division = enumValue.name();
 		this.District = district;
+		this.UpazillaName = upazillaName;
 	}
 
 	public String getDivision() {
@@ -30,15 +21,19 @@ public class District {
 		return District;
 	}
 
-	public int getId() {
-		return Id;
-	}
-
 	public void setDistrict(String district) {
 		District = district;
 	}
 
+	public String getUpazillaName() {
+		return UpazillaName;
+	}
+
+	public void setUpazillaName(String upazillaName) {
+		UpazillaName = upazillaName;
+	}
+
 	private String Division;
 	private String District;
-	private int Id;
+	private String UpazillaName;
 }

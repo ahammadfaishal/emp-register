@@ -1,21 +1,20 @@
 package com.faisal.empgui;
 
+import java.awt.CardLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLayeredPane;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.CardLayout;
-import java.awt.Color;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.SwingConstants;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
 
 public class MainWindow extends JFrame {
 
@@ -25,10 +24,12 @@ public class MainWindow extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					MainWindow frame = new MainWindow();
 					frame.setVisible(true);
+					Files.createDirectories(Paths.get(System.getProperty("user.home"), "/emp-images"));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -41,7 +42,7 @@ public class MainWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public MainWindow() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -49,7 +50,7 @@ public class MainWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
-		
+
 
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBounds(10, 42, 564, 308);
@@ -59,29 +60,29 @@ public class MainWindow extends JFrame {
 		JPanel wlcPanel = new WelcomePanel();
 		layeredPane.add(wlcPanel, "name_19251693424100");
 		layeredPane.setLayer(wlcPanel, 0);
-		
-		JPanel showEmpPanel = new ShowEmployeePanel();		
+
+		JPanel showEmpPanel = new ShowEmployeePanel();
 		layeredPane.add(showEmpPanel, "name_228655723198400");
-		
+
 		JPanel addDistPanel = new AddDistrictPanel();
-		layeredPane.add(addDistPanel, "name_125723207752000");		
+		layeredPane.add(addDistPanel, "name_125723207752000");
 
 		JPanel showDistPanel = new ShowDistrictPanel();
-		layeredPane.add(showDistPanel, "name_127500599036700");		
+		layeredPane.add(showDistPanel, "name_127500599036700");
 
 		JPanel addUpzPanel = new AddUpazillaPanel();
 		layeredPane.add(addUpzPanel, "name_164650998022500");
-		
+
 
 		JPanel showUpzPanel = new ShowUpazillaPanel();
 		layeredPane.add(showUpzPanel, "name_173752868045100");
 
 		JPanel addEmpPanel = new AddEmployeePanel();
-		layeredPane.add(addEmpPanel, "name_176624290242800");	
+		layeredPane.add(addEmpPanel, "name_176624290242800");
 
-		JPanel srchEmpPanel = new SearchEmployeePanel();		
-		layeredPane.add(srchEmpPanel, "name_229282184965900");		
-		
+		JPanel srchEmpPanel = new SearchEmployeePanel();
+		layeredPane.add(srchEmpPanel, "name_229282184965900");
+
 
 		JPanel menuPanel = new JPanel();
 		menuPanel.setBounds(10, 11, 564, 27);
@@ -180,6 +181,9 @@ public class MainWindow extends JFrame {
 				layeredPane.revalidate();
 			}
 		});
-		empMenu.add(searchEmpMenu);
+		empMenu.add(searchEmpMenu);	
+		
 	}
+	
+	
 }
