@@ -157,7 +157,9 @@ public class LoginFrame extends JFrame {
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (txtUserName.getText().equals("admin") && pwdField.getText().equals("123qwe")) {
+				DB_UTIL db = new DB_UTIL();
+				int result = db.checkUser(txtUserName.getText(), pwdField.getText());
+				if (result > 0) {
 					lblWarning.setText("Login successful");
 					MainWindow main = new MainWindow();
 					main.setVisible(true);
