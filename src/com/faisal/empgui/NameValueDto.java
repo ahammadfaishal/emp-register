@@ -1,33 +1,33 @@
 package com.faisal.empgui;
 
 public class NameValueDto<T> {
-	@Override
-	public String toString() {
-		return  getName();
-	}
+    private String Name;
+    private T Value;
 
-	public NameValueDto(String name, T value) {
-		super();
-		Name = name;
-		Value = value;
-	}
+    public NameValueDto(String name, T value) {
+        super();
+        Name = name;
+        Value = value;
+    }
 
-	private String Name;
-	private T Value;
+    @Override
+    public String toString() {
+        return getName();
+    }
 
-	public String getName() {
-		return Name;
-	}
+    public String getName() {
+        return Name;
+    }
 
-	public void setName(String name) {
-		Name = name;
-	}
+    public void setName(String name) {
+        Name = name;
+    }
 
-	public T getValue() {
-		return Value;
-	}
+    public T getValue() {
+        return Value;
+    }
 
-	public void setValue(T value) {
-		Value = value;
-	}
+    public void setValue(T value) {
+        Value = value;
+    }
 }

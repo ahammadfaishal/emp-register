@@ -1,39 +1,39 @@
 package com.faisal.empgui;
 
 public class Upazilla {
-	public Upazilla(int division_Id, String district, String upazillaName) {
-		super();
-		Divisions enumValue = Divisions.values()[division_Id];
-		this.Division = enumValue.name();
-		this.District = district;
-		this.UpazillaName = upazillaName;
-	}
+    private String Division;
+    private String District;
+    private String UpazillaName;
 
-	public String getDivision() {
-		return Division;
-	}
+    public Upazilla(int division_Id, String district, String upazillaName) {
+        super();
+        Divisions enumValue = Divisions.values()[division_Id];
+        this.Division = enumValue.name();
+        this.District = district;
+        this.UpazillaName = upazillaName;
+    }
 
-	public void setDivision(String division) {
-		Division = division;
-	}
+    public String getDivision() {
+        return Division;
+    }
 
-	public String getDistrict() {
-		return District;
-	}
+    public void setDivision(String division) {
+        Division = division;
+    }
 
-	public void setDistrict(String district) {
-		District = district;
-	}
+    public String getDistrict() {
+        return District;
+    }
 
-	public String getUpazillaName() {
-		return UpazillaName;
-	}
+    public void setDistrict(String district) {
+        District = district;
+    }
 
-	public void setUpazillaName(String upazillaName) {
-		UpazillaName = upazillaName;
-	}
+    public String getUpazillaName() {
+        return UpazillaName;
+    }
 
-	private String Division;
-	private String District;
-	private String UpazillaName;
+    public void setUpazillaName(String upazillaName) {
+        UpazillaName = upazillaName;
+    }
 }

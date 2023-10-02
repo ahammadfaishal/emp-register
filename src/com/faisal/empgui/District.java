@@ -1,44 +1,44 @@
 package com.faisal.empgui;
 
 public class District {
-	@Override
-	public String toString() {
-		return getDistrict();
-	}
+    private String Division;
+    private String District;
+    private int Id;
 
-	public District(String division, String district) {
-		this.Division = division;
-		this.District = district;
-	}
+    public District(String division, String district) {
+        this.Division = division;
+        this.District = district;
+    }
 
-	public District(int id, int division_Id, String district) {
-		this.Id = id;
-		Divisions enumValue = Divisions.values()[division_Id];
-		this.Division = enumValue.name();
-		this.District = district;
-	}
+    public District(int id, int division_Id, String district) {
+        this.Id = id;
+        Divisions enumValue = Divisions.values()[division_Id];
+        this.Division = enumValue.name();
+        this.District = district;
+    }
 
-	public String getDivision() {
-		return Division;
-	}
+    @Override
+    public String toString() {
+        return getDistrict();
+    }
 
-	public void setDivision(String division) {
-		Division = division;
-	}
+    public String getDivision() {
+        return Division;
+    }
 
-	public String getDistrict() {
-		return District;
-	}
+    public void setDivision(String division) {
+        Division = division;
+    }
 
-	public int getId() {
-		return Id;
-	}
+    public String getDistrict() {
+        return District;
+    }
 
-	public void setDistrict(String district) {
-		District = district;
-	}
+    public void setDistrict(String district) {
+        District = district;
+    }
 
-	private String Division;
-	private String District;
-	private int Id;
+    public int getId() {
+        return Id;
+    }
 }

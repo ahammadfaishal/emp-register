@@ -1,76 +1,76 @@
 package com.faisal.empgui;
 
 public class Employee {
-	public Employee(String fistName, String middleName, String lastName, String nID, String phone, String email,
-			String address, String imageUrl) {
-		super();
-		FirstName = fistName;
-		MiddleName = middleName;
-		LastName = lastName;
-		NID = nID;
-		Phone = phone;
-		Email = email;
-		Address = address;
-		ImageUrl = imageUrl;
-	}
+    private String FirstName;
+    private String MiddleName;
+    private String LastName;
+    private String NID;
+    private String Phone;
+    private String Email;
+    private String Address;
+    private String ImageUrl;
 
-	public String getName() {
-		StringBuilder sb = new StringBuilder(FirstName + " ");
-		sb.append(MiddleName + " ");
-		sb.append(LastName);
-		return sb.toString();
-	}
+    public Employee(String fistName, String middleName, String lastName, String nID, String phone, String email,
+                    String address, String imageUrl) {
+        super();
+        FirstName = fistName;
+        MiddleName = middleName;
+        LastName = lastName;
+        NID = nID;
+        Phone = phone;
+        Email = email;
+        Address = address;
+        ImageUrl = imageUrl;
+    }
 
-	public void setFirstName(String name) {
-		FirstName = name;
-	}
+    public String getName() {
+        StringBuilder sb = new StringBuilder(FirstName + " ");
+        sb.append(MiddleName + " ");
+        sb.append(LastName);
+        return sb.toString();
+    }
 
-	public String getNID() {
-		return NID;
-	}
+    public void setFirstName(String name) {
+        FirstName = name;
+    }
 
-	public void setNID(String nID) {
-		NID = nID;
-	}
+    public String getNID() {
+        return NID;
+    }
 
-	public String getPhone() {
-		return Phone;
-	}
+    public void setNID(String nID) {
+        NID = nID;
+    }
 
-	public void setPhone(String phone) {
-		Phone = phone;
-	}
+    public String getPhone() {
+        return Phone;
+    }
 
-	public String getEmail() {
-		return Email;
-	}
+    public void setPhone(String phone) {
+        Phone = phone;
+    }
 
-	public void setEmail(String email) {
-		Email = email;
-	}
+    public String getEmail() {
+        return Email;
+    }
 
-	public String getAddress() {
-		return Address;
-	}
+    public void setEmail(String email) {
+        Email = email;
+    }
 
-	public void setAddress(String address) {
-		Address = address;
-	}
+    public String getAddress() {
+        return Address;
+    }
 
-	public String getImageUrl() {
-		return ImageUrl;
-	}
+    public void setAddress(String address) {
+        Address = address;
+    }
 
-	public void setImageUrl(String imageUrl) {
-		ImageUrl = imageUrl;
-	}
+    public String getImageUrl() {
+        return ImageUrl;
+    }
 
-	private String FirstName;
-	private String MiddleName;
-	private String LastName;
-	private String NID;
-	private String Phone;
-	private String Email;
-	private String Address;
-	private String ImageUrl;
+    public void setImageUrl(String imageUrl) {
+        ImageUrl = imageUrl;
+    }
 }
